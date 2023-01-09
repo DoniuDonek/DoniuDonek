@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -18,12 +19,12 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zr)i%#ilt^vfzf^08ica_8e00=3xy13l+qrb-03ayl%b1*cyq*'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default = True, cast = bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://ecommerceapp-env.eba-7ztgemaf.eu-west-2.elasticbeanstalk.com/']
 
 
 # Application definition
@@ -41,11 +42,13 @@ INSTALLED_APPS = [
     'store',
     'cart',
     'orders',
+    'admin_honeypot',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django_session_timeout.middleware.SessionTimeoutMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -137,8 +140,12 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'Adoniek1993@gmail.com'
-EMAIL_HOST_PASSWORD = 'htmdkaiynpiohfnq'
-EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST', default = 'localhost')
+EMAIL_PORT = config('EMAIL_PORT', cast = int)
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast = bool)
+
+SESSION_EXPIRE_SECONDS = 300
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
+SESSION_TIMEOUT_REDIRECT = 'login'
