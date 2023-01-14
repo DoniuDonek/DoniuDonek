@@ -10,10 +10,11 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 from pathlib import Path
 from decouple import config
-from environs import Env
+import os
 
-env = Env() 
-env.read_env() 
+# from decouple import config
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
@@ -25,9 +26,8 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default = True, cast = bool)
-
-ALLOWED_HOSTS = [".herokuapp.com", "localhost", "127.0.0.1"] 
+DEBUG = config('DEBUG', cast = bool, default = True)
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -94,8 +94,6 @@ DATABASES = {
     }
 }
 
-
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -144,23 +142,16 @@ MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
 
-EMAIL_HOST = config('EMAIL_HOST', default = 'localhost')
-EMAIL_PORT = config('EMAIL_PORT', cast = int)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST          = config('EMAIL_HOST')
+EMAIL_PORT          = config('EMAIL_PORT', cast=int)
+EMAIL_HOST_USER     = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast = bool)
+EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool, default=False)
 
 SESSION_EXPIRE_SECONDS = 300
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_TIMEOUT_REDIRECT = 'login'
 
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-
-SECURE_HSTS_SECONDS = 2592000
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
-
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", cast = int, default=2592000) 
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config("SECURE_HSTS_INCLUDE_SUBDOMAINS", cast = bool, default=True)
+SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", cast = bool, default=True)
