@@ -10,8 +10,9 @@ Planned changes:
 2. Tests, tests, tests!
 3. compiling with docker-compose
 4. adding more payment options
-5. security changes and check before deployment 
-6. deployment on AWS (EB or EC2)
+5. flake8
+6. security changes and check before deployment 
+7. deployment on AWS (EB or EC2)
 --------------------------------------------------------------
 Need to run project?
 1. Download ZIP
