@@ -9,9 +9,13 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
-from decouple import config
-
+import os
 # from decouple import config
+from environs import Env
+
+# Initialise environment variables
+env = Env()
+env.read_env()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,10 +26,10 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG")
 ALLOWED_HOSTS = []
 
 
@@ -45,6 +49,8 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'admin_honeypot',
+
+    
 ]
 
 MIDDLEWARE = [
@@ -86,13 +92,30 @@ AUTH_USER_MODEL = 'accounts.Account' # localisation and model of authentication
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+if 'RDS_DB_NAME' in os.environ:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'], 
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
-
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -143,17 +166,17 @@ from django.contrib.messages import constants as messages
 MESSAGE_TAGS = {
     messages.ERROR: 'danger',
 }
-EMAIL_HOST='smtp.gmail.com'
-EMAIL_PORT=587
-EMAIL_HOST_USER='Adoniek1993@gmail.com'
-EMAIL_HOST_PASSWORD='htmdkaiynpiohfnq'
-EMAIL_USE_TLS=True
+EMAIL_HOST          = env('EMAIL_HOST')
+EMAIL_PORT          = env.int('EMAIL_PORT')
+EMAIL_HOST_USER     = env('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS       = env.bool('EMAIL_USE_TLS')
 
 
 SESSION_EXPIRE_SECONDS = 300
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY = True
 SESSION_TIMEOUT_REDIRECT = 'login'
 
-SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", cast = int, default=2592000) 
-SECURE_HSTS_INCLUDE_SUBDOMAINS = config("SECURE_HSTS_INCLUDE_SUBDOMAINS", cast = bool, default=True)
-SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", cast = bool, default=True)
+SECURE_HSTS_SECONDS             = env.int("SECURE_HSTS_SECONDS", default=2592000) 
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", default=True)
+SECURE_HSTS_PRELOAD             = env.bool("SECURE_HSTS_PRELOAD", default=True)
