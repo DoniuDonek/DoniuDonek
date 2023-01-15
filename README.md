@@ -7,10 +7,11 @@ If access is needed - mail me adoniek93@gmail.com - I will send data required to
 
 Planned changes:
 1. switch from python-decouple to environs
-2. compiling with docker-compose
-3. adding more payment options
-4. security changes and check before deployment 
-5. deployment on AWS (EB or EC2)
+2. Tests, tests, tests!
+3. compiling with docker-compose
+4. adding more payment options
+5. security changes and check before deployment 
+6. deployment on AWS (EB or EC2)
 --------------------------------------------------------------
 Need to run project?
 1. Download ZIP
