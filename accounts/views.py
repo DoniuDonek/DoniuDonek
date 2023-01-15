@@ -5,7 +5,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.auth.tokens import default_token_generator
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.http import HttpResponse
+# from django.http import HttpResponse
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.views.decorators.csrf import csrf_protect
