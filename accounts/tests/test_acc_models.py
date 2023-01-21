@@ -79,28 +79,3 @@ class CreateSuperuserTest(TestCase):
         self.assertTrue(admin_user.is_active)
         self.assertTrue(admin_user.is_staff)
         self.assertTrue(admin_user.is_superuser)
-
-     
-
-# class MyAccountManagerTest(TestCase): # need some repairs
-#     manager = MyAccountManager()
-
-#     def setUp(self):
-#         pass
-
-#     def test_create_user(self):
-#         # Test creating a user with all required fields
-#         self.user = self.manager.create_user(
-#             first_name='John',
-#             last_name='Doe',
-#             email='johndoe@example.com',
-#             username='johndoe',
-#             password='password123'
-#         )
-#         self.assertIsNotNone(self.user)
-#         self.assertIsInstance(self.user, get_user_model())
-#         self.assertEqual(self.user.first_name, 'John')
-#         self.assertEqual(self.user.last_name, 'Doe')
-#         self.assertEqual(self.user.email, 'johndoe@example.com')
-#         self.assertEqual(self.user.username, 'johndoe')
-#         self.assertTrue(self.user.check_password('password123'))
